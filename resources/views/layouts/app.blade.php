@@ -9,7 +9,7 @@
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     </head>
-    <body class="antialiased">
+    <body class="antialiased bg-blue-900">
         @yield('content')
     </body>
     <script src="/js/app.js"></script>
