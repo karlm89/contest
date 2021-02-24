@@ -19,5 +19,3 @@ Route::get('/', function () {
 });
 
 Route::post('/contest', [ ContestEntryController::class, 'store' ]);
-
-require __DIR__.'/auth.php';
