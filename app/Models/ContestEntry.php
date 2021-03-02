@@ -2,11 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+// use App\Events\NewEntryReceivedEvent;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ContestEntry extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+    // protected static function booted() 
+    // {
+    //     static::created(function($contestEntry) {
+    //         NewEntryReceivedEvent::dispatch();
+    //     });
+    // }
 }
+ 

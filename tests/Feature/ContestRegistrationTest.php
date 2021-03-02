@@ -2,13 +2,28 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Mail\WelcomeContestMail;
+use Illuminate\Support\Facades\Mail;
+use App\Events\NewEntryReceivedEvent;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ContestRegistrationTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void 
+    {
+        parent::setUp();
+
+        // Event::fake([
+        //     NewEntryReceivedEvent::class
+        // ]);
+
+        Mail::fake();
+    }
 
     /** @test */
     public function an_email_can_be_entered_into_the_contest()
@@ -45,4 +60,30 @@ class ContestRegistrationTest extends TestCase
 
         $this->assertDatabaseCount('contest_entries', 0);
     }
+
+    /** @test */
+    public function an_event_can_be_fired()
+    {
+        $this->withoutExceptionHandling();
+
+        Event::fake();
+
+        $this->post('/contest',[
+            'email' => 'abc@abc.com'
+        ]);
+
+        Event::assertDispatched(NewEntryReceivedEvent::class);
+    }
+
+    /** @test */
+    public function a_welcome_email_is_sent()
+    {
+        // $this->withoutExceptionHandling();
+        $this->post('/contest',[
+            'email' => 'abc@abc.com'
+        ]);
+
+        Mail::assertQueued(WelcomeContestMail::class);
+    }
+    
 }
